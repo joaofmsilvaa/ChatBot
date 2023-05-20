@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import org.w3c.dom.Text;
+
 import java.util.EventListener;
 import java.util.List;
 
@@ -47,6 +49,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
         Glide.with(holder.rootView.getContext()).load(chat.getChatImage()).into(holder.chatImageView);
         holder.chatNameTextView.setText(chat.getChatName());
+        holder.lastMessageDateTV.setText(chat.getLastMessageDate());
+
 
         if (lastMessage != null) {
             holder.lastMessageTextView.setText(lastMessage.getMessage());
@@ -58,6 +62,18 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             @Override
             public void onClick(View v) {
                 if (eventListener != null) eventListener.onChatClicked(chat.getChatID());
+            }
+        });
+
+        holder.rootView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (eventListener != null) {
+                    eventListener.onContactLongClicked(chat.getChatID());
+                    return true;
+                } else {
+                    return false;
+                }
             }
         });
 
@@ -73,6 +89,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         private Context context;
         private View rootView;
         private TextView chatNameTextView;
+        private TextView lastMessageDateTV;
         private ImageView chatImageView;
         private TextView lastMessageTextView;
 
@@ -83,6 +100,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             this.rootView = rootView;
             this.chatImageView = rootView.findViewById(R.id.chatImageView);
             this.chatNameTextView = rootView.findViewById(R.id.chatNameTextView);
+            this.lastMessageDateTV = rootView.findViewById(R.id.lastMessageDateTV);
             this.lastMessageTextView = rootView.findViewById(R.id.lastMessageTextView);
             this.chatConstraintLayout = rootView.findViewById(R.id.chatConstraintLayout);
         }

@@ -12,10 +12,10 @@ public class Chat {
     public String lastMessageDate;
     private String lastMessage;
     private String chatImage;
-
-    public Chat(int chatID, String chatName, String lastMessage, String chatImage) {
+    public Chat(int chatID, String chatName, String lastMessageDate ,String lastMessage, String chatImage) {
         this.chatID = chatID;
         this.chatName = chatName;
+        this.lastMessageDate = lastMessageDate;
         this.lastMessage = lastMessage;
         this.chatImage = chatImage;
     }
@@ -23,15 +23,15 @@ public class Chat {
     public int getChatID(){
         return chatID;
     }
-
     public String getChatName() {
         return chatName;
     }
-
+    public String getLastMessageDate() {
+        return lastMessageDate;
+    }
     public String getLastMessage() {
         return lastMessage;
     }
-
     public String getChatImage() {
         return chatImage;
     }

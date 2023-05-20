@@ -13,6 +13,8 @@ import android.net.Uri;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 public class AddChatActivity extends AppCompatActivity {
@@ -107,12 +109,31 @@ public class AddChatActivity extends AppCompatActivity {
         AppDatabase db = AppDatabase.getInstance(context);
         ChatDAO chatDao = db.getChatDao();
 
+        Calendar calendar = Calendar.getInstance();
+        String currentDate = DateFormat.getDateInstance().format(calendar.getTime());
+
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+
+        String hour = currentHour + ":" + minuteFormater(calendar);
+
         String chatImage = "https://www.w3schools.com/howto/img_avatar.png";
 
-        Chat chat = new Chat(0,chatName,"",chatImage);
+        Chat chat = new Chat(0,chatName,currentDate + " " + hour,"",chatImage);
 
         chatDao.insert(chat);
         finish();
 
+    }
+
+    public static String minuteFormater(Calendar calendar){
+        int currentMinute = calendar.get(Calendar.MINUTE);
+        String minutes = Integer.toString(currentMinute);
+
+
+        if(currentMinute < 10){
+            minutes = "0" + currentMinute;
+        }
+
+        return minutes;
     }
 }

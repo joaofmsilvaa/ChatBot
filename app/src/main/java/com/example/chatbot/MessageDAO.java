@@ -1,6 +1,7 @@
 package com.example.chatbot;
 
 import androidx.room.Dao;
+import androidx.room.Insert;
 import androidx.room.Query;
 
 import java.util.List;
@@ -16,4 +17,7 @@ public interface MessageDAO {
 
     @Query("SELECT * FROM message ORDER BY date DESC ")
     List<Message> getLastMessage();
+
+    @Insert
+    void insert(Message message);
 }

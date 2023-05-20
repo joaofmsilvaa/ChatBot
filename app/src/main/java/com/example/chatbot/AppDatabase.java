@@ -24,14 +24,6 @@ public abstract class AppDatabase extends RoomDatabase {
                         public void onCreate(@NonNull SupportSQLiteDatabase db) {
                             super.onCreate(db);
 
-                            db.execSQL("INSERT INTO Chat ('chatName','lastMessage', 'chatImage') VALUES ('Bot 1', '' , 'https://www.w3schools.com/howto/img_avatar.png')");
-                            db.execSQL("INSERT INTO Chat ('chatName', 'LastMessage','chatImage') VALUES ('Bot 2', '' , 'https://www.w3schools.com/howto/img_avatar.png')");
-
-                            db.execSQL("INSERT INTO MESSAGE('chatId','message', 'date') VALUES (0, 'Hello world', '2023-05-17')");
-                            db.execSQL("INSERT INTO MESSAGE('chatId','message', 'date' ) VALUES (1, 'Hello word', '2023-05-17')");
-                            /*
-                            db.execSQL("INSERT INTO MESSAGE('chatId','message', 'date') VALUES (1, 'Hello mundo', '2023-05-18')");
-                            */
                         }
                     })
                     .build();

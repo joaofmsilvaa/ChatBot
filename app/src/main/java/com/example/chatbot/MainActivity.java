@@ -1,9 +1,11 @@
 package com.example.chatbot;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -70,6 +72,35 @@ public class MainActivity extends AppCompatActivity implements ChatAdapter.ChatA
 
     @Override
     public void onContactLongClicked(int chatId) {
+        ChatDAO chatDao = AppDatabase.getInstance(MainActivity.this).getChatDao();
+        Chat chat = chatDao.getChatById(chatId);
 
+        // 1. Instantiate an <code><a href="/reference/android/app/AlertDialog.Builder.html">AlertDialog.Builder</a></code> with its constructor
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        // 2. Chain together various setter methods to set the dialog characteristics
+        builder.setTitle("Delete chat");
+        builder.setMessage("Do you really want to delete \"" + chat.getChatName() + "\" ?");
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                chatDao.delete(chat);
+                List<Chat> newList = chatDao.getAll();
+                adapter.refreshList(newList);
+                dialog.dismiss();
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        // 3. Get the <code><a href="/reference/android/app/AlertDialog.html">AlertDialog</a></code> from <code><a href="/reference/android/app/AlertDialog.Builder.html#create()">create()</a></code>
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
