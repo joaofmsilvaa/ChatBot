@@ -10,7 +10,7 @@ import java.util.List;
 @Dao
 public interface ChatDAO {
 
-    @Query("SELECT * FROM chat ORDER BY lastMessageDate")
+    @Query("SELECT * FROM chat ORDER BY lastMessageDate DESC")
     List<Chat> getAll();
 
 

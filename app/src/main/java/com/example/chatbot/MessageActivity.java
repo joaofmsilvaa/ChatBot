@@ -73,7 +73,9 @@ public class MessageActivity extends AppCompatActivity {
 
                 String hour = currentHour + ":" + minuteFormater(calendar);
 
-                Message newMessage = new Message(0,chatId,message,currentDate + " " + hour);
+                currentDate += " " + hour;
+
+                Message newMessage = new Message(0,chatId,message,currentDate);
 
                 messageDAO.insert(newMessage);
 

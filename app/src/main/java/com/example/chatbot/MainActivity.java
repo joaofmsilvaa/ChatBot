@@ -59,8 +59,8 @@ public class MainActivity extends AppCompatActivity implements ChatAdapter.ChatA
     @Override
     protected void onStart() {
         super.onStart();
-        List<Chat> newContactList = AppDatabase.getInstance(this).getChatDao().getAll();
-        this.adapter.refreshList(newContactList);
+        List<Chat> newChatList = AppDatabase.getInstance(this).getChatDao().getAll();
+        this.adapter.refreshList(newChatList);
     }
 
     @Override
