@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -32,12 +33,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public MessageAdapter.MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == 0) {
             // Criar um objeto do tipo View com base no layout criado (message_item.xml)
-            View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.messagesent_item, parent, false);
+            View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.messagereceived_item, parent, false);
             // criar e devolver um objeto do tipo ContactViewHolder
             return new MessageAdapter.MessageSentViewHolder(rootView, parent.getContext());
         } else {
             // Criar um objeto do tipo View com base no layout criado (message_item.xml)
-            View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.messagereceived_item, parent, false);
+            View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.messagesent_item, parent, false);
             // criar e devolver um objeto do tipo ContactViewHolder
             return new MessageAdapter.MessageReceivedViewHolder(rootView, parent.getContext());
         }
@@ -52,17 +53,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         String chatName = db.getChatDao().getNameByID(messageList.getChatId());
 
-        if(messageList.senderId == 1){
+        if(messageList.senderId == 0){
             chatName = "You";
         }
 
         holder.dateTextView.setText(messageList.getDate());
         holder.authorNameTextView.setText(chatName);
         holder.messageTextView.setText(messageList.getMessage());
-
-        String picture = db.getChatDao().getPictureByChatId(messageList.getChatId());
-        Glide.with(holder.rootView.getContext()).load(picture).into(holder.authorImageView);
-
+        //Glide.with(holder.rootView.getContext()).load(R.drawable.botimage_01).into(holder.authorImageView);
 
     }
 
@@ -105,9 +103,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         }
     }
 
-    public void refreshList(List<Message> newMessageList) {
+    public void refreshList(List<Message> newMessageList, Context context) {
+
         this.messageList = newMessageList;
         notifyDataSetChanged();
     }
+
+
 
 }

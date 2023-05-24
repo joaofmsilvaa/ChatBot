@@ -13,6 +13,8 @@ import android.net.Uri;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -54,55 +56,8 @@ public class AddChatActivity extends AppCompatActivity {
         pickImageButton = findViewById(R.id.pickImageButton);
         previewImageView = findViewById(R.id.previewImageView);
 
-        // handle the Choose Image button to trigger
-        // the image chooser function
-        pickImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageChooser();
-            }
-        });
-    }
+        Glide.with(AddChatActivity.this).load(R.drawable.botimage_01).into(previewImageView);
 
-
-    /*
-    Source: https://stackoverflow.com/questions/10165302/dialog-to-pick-image-from-gallery-or-from-camera
-     */
-
-    // this function is triggered when
-    // the Select Image Button is clicked
-    void imageChooser() {
-
-        // create an instance of the
-        // intent of the type image
-        Intent i = new Intent();
-        i.setType("image/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-
-        // pass the constant to compare it
-        // with the returned requestCode
-        startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
-    }
-
-    // this function is triggered when user
-    // selects the image from the imageChooser
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK) {
-
-            // compare the resultCode with the
-            // SELECT_PICTURE constant
-            if (requestCode == SELECT_PICTURE) {
-                // Get the url of the image from data
-                Uri selectedImageUri = data.getData();
-                Log.i("imageURI", selectedImageUri.toString());
-                if (null != selectedImageUri) {
-                    // update the preview image in the layout
-                    previewImageView.setImageURI(selectedImageUri);
-                }
-            }
-        }
     }
 
     public void createChat(String chatName, Context context){
@@ -116,7 +71,7 @@ public class AddChatActivity extends AppCompatActivity {
 
         String hour = currentHour + ":" + minuteFormater(calendar);
 
-        String chatImage = "https://www.w3schools.com/howto/img_avatar.png";
+        String chatImage = "R.drawable.botimage_01";
 
         Chat chat = new Chat(0,chatName,currentDate + " " + hour,"",chatImage);
 

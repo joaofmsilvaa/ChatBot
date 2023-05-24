@@ -10,6 +10,7 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -28,6 +29,9 @@ public class MessageActivity extends AppCompatActivity {
 
     private FloatingActionButton backFB;
 
+    private  LinearLayoutManager layoutManager;
+
+    private Context context = MessageActivity.this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,21 +65,23 @@ public class MessageActivity extends AppCompatActivity {
         // criar um objeto do tipo MessageAdapter (que extende Adapter)
         this.adapter = new MessageAdapter(messageDAO.getAll(chatId));
 
+        adapter.scrollToLastItem();
+
         // criar um objecto do tipo LinearLayoutManager para ser utilizado na RecyclerView
         // o LinearLayoutManager tem como orientação default a orientação Vertical
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        this.layoutManager = new LinearLayoutManager(this);
 
         // Definir que a RecyclerView utiliza como Adapter o objeto que criámos anteriormente
         recyclerView.setAdapter(this.adapter);
         // Definir que a RecyclerView utiliza como LayoutManager o objeto que criámos anteriormente
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(this.layoutManager);
+
 
         sendMessageFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 int personSenderId = 0;
-
 
                 String message = messageEditText.getText().toString();
 
@@ -101,7 +107,7 @@ public class MessageActivity extends AppCompatActivity {
                     db.getChatDao().updateLastMessageDate(currentDate,chatId);
 
                     List<Message> newMessageList = db.getMessageDao().getAll(chatId);
-                    MessageActivity.this.adapter.refreshList(newMessageList);
+                    MessageActivity.this.adapter.refreshList(newMessageList, MessageActivity.this);
 
                     botEco(chatId, currentDate, message, messageDAO, db);
 
@@ -133,7 +139,7 @@ public class MessageActivity extends AppCompatActivity {
         db.getChatDao().updateLastMessageDate(currentDate,chatId);
 
         List<Message> newMessageList = db.getMessageDao().getAll(chatId);
-        MessageActivity.this.adapter.refreshList(newMessageList);
+        MessageActivity.this.adapter.refreshList(newMessageList, MessageActivity.this);
     }
 
 
@@ -143,4 +149,5 @@ public class MessageActivity extends AppCompatActivity {
         context.startActivity(intent);
 
     }
+
 }

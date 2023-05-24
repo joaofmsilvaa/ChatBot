@@ -46,7 +46,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
         Message lastMessage = AppDatabase.getInstance(holder.context).getMessageDao().getLastMessageFromChat(chat.getChatID());
 
-        Glide.with(holder.rootView.getContext()).load(chat.getChatImage()).into(holder.chatImageView);
+        Glide.with(holder.rootView.getContext()).load(R.drawable.botimage_01).into(holder.chatImageView);
         holder.chatNameTextView.setText(chat.getChatName());
         holder.lastMessageDateTV.setText(chat.getLastMessageDate());
 
