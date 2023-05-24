@@ -1,5 +1,6 @@
 package com.example.chatbot;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -25,6 +26,8 @@ public class MessageActivity extends AppCompatActivity {
     private EditText messageEditText;
     private FloatingActionButton sendMessageFAB;
 
+    private FloatingActionButton backFB;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,14 @@ public class MessageActivity extends AppCompatActivity {
 
         messageEditText = findViewById(R.id.messageEditText);
         sendMessageFAB = findViewById(R.id.sendMessageActionButton);
+        backFB = findViewById(R.id.backfloatingActionButton);
+
+        backFB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                backToChatMenu(MessageActivity.this);
+            }
+        });
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -62,30 +73,39 @@ public class MessageActivity extends AppCompatActivity {
         sendMessageFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                int personSenderId = 0;
+
+
                 String message = messageEditText.getText().toString();
 
-                messageEditText.setText("");
+                // Learned the method trim() in
+                // https://stackoverflow.com/questions/3247067/how-do-i-check-that-a-java-string-is-not-all-whitespaces
 
-                Calendar calendar = Calendar.getInstance();
-                String currentDate = DateFormat.getDateInstance().format(calendar.getTime());
+                if (message.trim().length() > 0){
+                    messageEditText.setText("");
 
-                int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+                    Calendar calendar = Calendar.getInstance();
+                    String currentDate = DateFormat.getDateInstance().format(calendar.getTime());
 
-                String hour = currentHour + ":" + minuteFormater(calendar);
+                    int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
 
-                currentDate += " " + hour;
+                    String hour = currentHour + ":" + minuteFormater(calendar);
 
-                Message newMessage = new Message(0,chatId,message,currentDate);
+                    currentDate += " " + hour;
 
-                messageDAO.insert(newMessage);
+                    Message newMessage = new Message(0,chatId, personSenderId ,message,currentDate);
 
-                db.getChatDao().updateLastMessageDate(currentDate,chatId);
+                    messageDAO.insert(newMessage);
 
-                List<Message> newMessageList = db.getMessageDao().getAll(chatId);
-                MessageActivity.this.adapter.refreshList(newMessageList);
+                    db.getChatDao().updateLastMessageDate(currentDate,chatId);
 
+                    List<Message> newMessageList = db.getMessageDao().getAll(chatId);
+                    MessageActivity.this.adapter.refreshList(newMessageList);
 
+                    botEco(chatId, currentDate, message, messageDAO, db);
 
+                }
             }
         });
     }
@@ -100,5 +120,27 @@ public class MessageActivity extends AppCompatActivity {
         }
 
         return minutes;
+    }
+
+    public void botEco(int chatId, String currentDate, String message, MessageDAO messageDAO, AppDatabase db){
+
+        int botSenderId = 1;
+
+        Message newMessage = new Message(0,chatId, botSenderId ,message,currentDate);
+
+        messageDAO.insert(newMessage);
+
+        db.getChatDao().updateLastMessageDate(currentDate,chatId);
+
+        List<Message> newMessageList = db.getMessageDao().getAll(chatId);
+        MessageActivity.this.adapter.refreshList(newMessageList);
+    }
+
+
+    public static void backToChatMenu(Context context){
+
+        Intent intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent);
+
     }
 }

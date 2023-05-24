@@ -22,7 +22,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
     private List<Chat> chatList;
     private List<Message> messageList;
-
     private ChatAdapterEventListener eventListener;
 
     public ChatAdapter(List<Chat> chatList, List<Message> messageList, ChatAdapterEventListener eventListener) {

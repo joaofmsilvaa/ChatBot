@@ -21,13 +21,27 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         this.messageList = messageList;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        Message message = messageList.get(position);
+        return message.getSenderId();
+    }
+
     @NonNull
     @Override
     public MessageAdapter.MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Criar um objeto do tipo View com base no layout criado (message_item.xml)
-        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_item, parent, false);
-        // criar e devolver um objeto do tipo ContactViewHolder
-        return new MessageAdapter.MessageViewHolder(rootView, parent.getContext());
+        if (viewType == 0) {
+            // Criar um objeto do tipo View com base no layout criado (message_item.xml)
+            View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.messagesent_item, parent, false);
+            // criar e devolver um objeto do tipo ContactViewHolder
+            return new MessageAdapter.MessageSentViewHolder(rootView, parent.getContext());
+        } else {
+            // Criar um objeto do tipo View com base no layout criado (message_item.xml)
+            View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.messagereceived_item, parent, false);
+            // criar e devolver um objeto do tipo ContactViewHolder
+            return new MessageAdapter.MessageReceivedViewHolder(rootView, parent.getContext());
+        }
+
     }
 
     @Override
@@ -37,6 +51,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         final Message messageList = this.messageList.get(position);
 
         String chatName = db.getChatDao().getNameByID(messageList.getChatId());
+
+        if(messageList.senderId == 1){
+            chatName = "You";
+        }
 
         holder.dateTextView.setText(messageList.getDate());
         holder.authorNameTextView.setText(chatName);
@@ -72,6 +90,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             this.messageTextView = rootView.findViewById(R.id.messageTextView);
             this.dateTextView = rootView.findViewById(R.id.dateTextView);
             this.authorImageView = rootView.findViewById(R.id.authorImageView);
+        }
+    }
+
+    public class MessageReceivedViewHolder extends MessageViewHolder {
+        public MessageReceivedViewHolder(@NonNull View rootView, Context context) {
+            super(rootView, context);
+        }
+    }
+
+    public class MessageSentViewHolder extends MessageViewHolder {
+        public MessageSentViewHolder(@NonNull View rootView, Context context) {
+            super(rootView, context);
         }
     }
 
