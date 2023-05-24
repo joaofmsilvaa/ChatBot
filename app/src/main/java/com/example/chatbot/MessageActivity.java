@@ -65,7 +65,6 @@ public class MessageActivity extends AppCompatActivity {
         // criar um objeto do tipo MessageAdapter (que extende Adapter)
         this.adapter = new MessageAdapter(messageDAO.getAll(chatId));
 
-        adapter.scrollToLastItem();
 
         // criar um objecto do tipo LinearLayoutManager para ser utilizado na RecyclerView
         // o LinearLayoutManager tem como orientação default a orientação Vertical
