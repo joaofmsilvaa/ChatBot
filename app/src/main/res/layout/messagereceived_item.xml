@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="@+id/authorImageView" />
 
     <TextView
-        android:id="@+id/exerciseQuestionTextView"
+        android:id="@+id/messageTextView"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

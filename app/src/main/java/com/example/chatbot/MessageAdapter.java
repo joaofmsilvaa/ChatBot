@@ -1,14 +1,16 @@
 package com.example.chatbot;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -22,7 +24,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     @Override
     public int getItemViewType(int position) {
         Message message = messageList.get(position);
-        return message.getSenderId();
+
+        if(!message.exerciseMessage){
+            // If the message isn't a exercise it returns the sender id
+            return message.getSenderId();
+        }
+        else{
+            // If the message is a exercise it returns the value 2 to differ from the senderIds
+            return 2;
+        }
     }
 
     @NonNull
@@ -33,13 +43,21 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.messagersent_item, parent, false);
             // criar e devolver um objeto do tipo ContactViewHolder
             return new MessageAdapter.MessageSentViewHolder(rootView, parent.getContext());
-        } else {
+        }
+
+        else if(viewType == 1) {
             // Criar um objeto do tipo View com base no layout criado (message_item.xml)
             View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.messagereceived_item, parent, false);
             // criar e devolver um objeto do tipo ContactViewHolder
             return new MessageAdapter.MessageReceivedViewHolder(rootView, parent.getContext());
         }
 
+        else{
+            // Criar um objeto do tipo View com base no layout criado (message_item.xml)
+            View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.exercise_item, parent, false);
+            // criar e devolver um objeto do tipo ContactViewHolder
+            return new MessageAdapter.ExerciseViewHolder(rootView, parent.getContext());
+        }
     }
 
     @Override
@@ -57,9 +75,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         holder.dateTextView.setText(messageList.getDate());
         holder.authorNameTextView.setText(chatName);
         holder.messageTextView.setText(messageList.getMessage());
-        //Glide.with(holder.rootView.getContext()).load(R.drawable.botimage_01).into(holder.authorImageView);
-
     }
+
 
     @Override
     public int getItemCount() {
@@ -75,16 +92,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         private TextView messageTextView;
         private TextView dateTextView;
 
-        private ImageView authorImageView;
+        private TextView questionTextView;
+        private RecyclerView optionsRecyclerView;
 
         public MessageViewHolder(@NonNull View rootView, Context context) {
             super(rootView);
             this.context = context;
             this.rootView = rootView;
-            this.authorNameTextView = rootView.findViewById(R.id.authorNameTextView);
-            this.messageTextView = rootView.findViewById(R.id.exerciseQuestionTextView);
-            this.dateTextView = rootView.findViewById(R.id.dateTextView);
-            this.authorImageView = rootView.findViewById(R.id.authorImageView);
+            this.authorNameTextView = this.rootView.findViewById(R.id.authorNameTextView);
+            this.messageTextView = this.rootView.findViewById(R.id.messageTextView);
+            this.dateTextView = this.rootView.findViewById(R.id.dateTextView);
+
+            this.questionTextView = this.rootView.findViewById(R.id.questionTextView);
+            this.optionsRecyclerView = this.rootView.findViewById(R.id.optionsRecyclerView);
         }
     }
 
@@ -96,6 +116,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     public class MessageSentViewHolder extends MessageViewHolder {
         public MessageSentViewHolder(@NonNull View rootView, Context context) {
+            super(rootView, context);
+        }
+    }
+
+    public class ExerciseViewHolder extends  MessageViewHolder{
+        public ExerciseViewHolder(@NonNull View rootView, Context context){
             super(rootView, context);
         }
     }

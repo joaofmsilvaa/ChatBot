@@ -29,15 +29,15 @@ public abstract class AppDatabase extends RoomDatabase {
 
                             // Exercises
 
-                            db.execSQL("INSERT INTO Exercise VALUES (1, 'What does the following java code returns?\n " +
+                            db.execSQL("INSERT INTO Exercise VALUES (1 , 'What does the following java code returns?\n " +
                                     "String a = \"Java is cool\";" +
                                     "System.out.println(\"hello world\");', 'A')");
 
-                            db.execSQL("INSERT INTO Exercise VALUES ('What does the \"++\" in a for loop do?\n', 'A')");
+                            db.execSQL("INSERT INTO Exercise VALUES (2 ,'What does the \"++\" in a for loop do?\n', 'A')");
 
-                            db.execSQL("INSERT INTO Exercise VALUES ('Which option successfully uses a method named \"hello\" from a class called \"myClass\"?\n', 'B')");
+                            db.execSQL("INSERT INTO Exercise VALUES (3 ,'Which option successfully uses a method named \"hello\" from a class called \"myClass\"?\n', 'B')");
 
-                            db.execSQL("INSERT INTO Exercise VALUES ('Is String a primitive type in Java?\n', 'B')");
+                            db.execSQL("INSERT INTO Exercise VALUES (4, 'Is String a primitive type in Java?\n', 'B')");
 
 
                             // Exercise Answers
@@ -48,18 +48,18 @@ public abstract class AppDatabase extends RoomDatabase {
                             db.execSQL("INSERT INTO ExerciseAnswers VALUES(3, 1, 'C', '\"Syntax error\"')");
 
                             // Ex2 - Answers
-                            db.execSQL("INSERT INTO ExerciseAnswers VALUES(1, 2, 'A', 'Increment the value of a certain variable')");
-                            db.execSQL("INSERT INTO ExerciseAnswers VALUES(2, 2, 'B', 'Does not no anything')");
-                            db.execSQL("INSERT INTO ExerciseAnswers VALUES(3, 2, 'C', 'Decrement the value of a variable')");
+                            db.execSQL("INSERT INTO ExerciseAnswers VALUES(4, 2, 'A', 'Increment the value of a certain variable')");
+                            db.execSQL("INSERT INTO ExerciseAnswers VALUES(5, 2, 'B', 'Does not no anything')");
+                            db.execSQL("INSERT INTO ExerciseAnswers VALUES(6, 2, 'C', 'Decrement the value of a variable')");
 
                             // Ex3 - Answers
-                            db.execSQL("INSERT INTO ExerciseAnswers VALUES(1, 3, 'A', 'hello()')");
-                            db.execSQL("INSERT INTO ExerciseAnswers VALUES(2, 3, 'B', 'myClass.hello()')");
-                            db.execSQL("INSERT INTO ExerciseAnswers VALUES(3, 3, 'C', 'hello.myClass()')");
+                            db.execSQL("INSERT INTO ExerciseAnswers VALUES(7, 3, 'A', 'hello()')");
+                            db.execSQL("INSERT INTO ExerciseAnswers VALUES(8, 3, 'B', 'myClass.hello()')");
+                            db.execSQL("INSERT INTO ExerciseAnswers VALUES(9, 3, 'C', 'hello.myClass()')");
 
                             // Ex4 - Answers
-                            db.execSQL("INSERT INTO ExerciseAnswers VALUES(1, 4, 'A', 'Yes')");
-                            db.execSQL("INSERT INTO ExerciseAnswers VALUES(2, 4, 'B', 'No')");
+                            db.execSQL("INSERT INTO ExerciseAnswers VALUES(10, 4, 'A', 'Yes')");
+                            db.execSQL("INSERT INTO ExerciseAnswers VALUES(11, 4, 'B', 'No')");
 
                         }
                     })

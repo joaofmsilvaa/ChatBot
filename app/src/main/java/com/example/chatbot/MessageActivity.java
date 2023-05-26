@@ -3,6 +3,7 @@ package com.example.chatbot;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -23,14 +24,10 @@ public class MessageActivity extends AppCompatActivity {
     private MessageAdapter adapter;
     private EditText messageEditText;
     private FloatingActionButton sendMessageFAB;
-
     private FloatingActionButton backFB;
     private  LinearLayoutManager layoutManager;
-
-    private Context context = MessageActivity.this;
-
     private int currentExercise = 0;
-
+    private Boolean exerciseIndicator = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,7 +95,7 @@ public class MessageActivity extends AppCompatActivity {
 
                     currentDate += " " + hour;
 
-                    Message newMessage = new Message(0,chatId, personSenderId ,message,currentDate);
+                    Message newMessage = new Message(0,chatId, personSenderId , false ,message,currentDate);
 
                     messageDAO.insert(newMessage);
 
@@ -131,19 +128,16 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     public void botAnswer(int chatId, String currentDate, String message, MessageDAO messageDAO, AppDatabase db){
-        Boolean exerciseIndicator = false;
-
         int botSenderId = 1;
 
-        String botMessage = generateAnswers(message, exerciseIndicator);
+        String botMessage = generateAnswers(message, this.exerciseIndicator);
 
-        Message newMessage = new Message(0, chatId , botSenderId , botMessage , currentDate);
+        Message newMessage = new Message(0, chatId , botSenderId , this.exerciseIndicator ,botMessage , currentDate);
 
         messageDAO.insert(newMessage);
 
         db.getChatDao().updateLastMessageDate(currentDate,chatId);
         db.getChatDao().updateLastMessage(botMessage, chatId);
-
 
         List<Message> newMessageList = db.getMessageDao().getAll(chatId);
         MessageActivity.this.adapter.refreshList(newMessageList, MessageActivity.this);
@@ -158,9 +152,13 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     public String generateAnswers(String message, Boolean exerciseIndicator) {
+        this.exerciseIndicator = false;
         String botMessage = message;
 
-        if(!exerciseIndicator && this.currentExercise == 0){
+        AppDatabase db = AppDatabase.getInstance(this);
+        ExerciseDao exerciseDao = db.getExerciseDao();
+
+        if(!this.exerciseIndicator && this.currentExercise == 0){
             if ("hello".equals(message) || "hi".equals(message) || "it's good to see you".equals(message) || "hi there".equals(message)) {
                 String[] greedings = {"Hello", "Hi", "Hello, how are you?", "It's good to see you too!", "hi there"};
                 int rnd = new Random().nextInt(greedings.length);
@@ -172,138 +170,55 @@ public class MessageActivity extends AppCompatActivity {
 
                 botMessage = checkingIn[rnd];
             } else if ("good".equals(message) || "i am good".equals(message) || "i am great".equals(message)) {
-                String[] checkingIn = {"That's great", "Nice, can i help you something?", "Fantastic!"};
-                int rnd = new Random().nextInt(checkingIn.length);
+                String[] status = {"That's great", "Nice, can i help you something?", "Fantastic!"};
+                int rnd = new Random().nextInt(status.length);
 
-                botMessage = checkingIn[rnd];
+                botMessage = status[rnd];
             } else if ("i am not feeling good".equals(message) || "i am feeling bad".equals(message) || "i am sad".equals(message) || "bad".equals(message)) {
-                String[] checkingIn = {"Do you want me to tell you a joke?", "I'm sorry to hear that", "I'm sorry, can i help you with something?"};
-                int rnd = new Random().nextInt(checkingIn.length);
+                String[] sadStatus = {"Do you want me to tell you a joke?", "I'm sorry to hear that", "I'm sorry, can i help you with something?"};
+                int rnd = new Random().nextInt(sadStatus.length);
 
-                botMessage = checkingIn[rnd];
+                botMessage = sadStatus[rnd];
             }
             else if("ask me a question".equals(message) || "give me a exercise".equals(message) || "ask me something".equals(message)){
-                this.currentExercise = new Random().nextInt(4);
-                botMessage = exercises(botMessage,currentExercise);
+                this.currentExercise = new Random().nextInt(exerciseDao.getAmmountOfExercises());
+                this.exerciseIndicator = true;
+
+                Log.i("test", Integer.toString(this.currentExercise));
+
+                botMessage = exercises(botMessage, this.currentExercise, this);
             }
         }
         else if(this.currentExercise != 0){
-            String[] greatAnswers = {"Great, you're correct", "Nice, you got it", "Well done, you did great"};
-            String[] badAnswers = {"Incorrect, the answer was option ", "Nope, it was option ", "Good luck next time, it was option"};
+            String[] greatAnswers = {"Great, you're right", "Nice, you got it", "Well done, you did great"};
+            String[] badAnswers = {"Incorrect, the answer was option ", "Nope, it was option ", "Good luck next time, it was option "};
 
-            if(this.currentExercise == 1){
-                String correctOption = "A";
+            String correctAnswer = exerciseDao.getCorrectAnswer(this.currentExercise);
 
-                if(message.equals("a")){
-                    int rnd = new Random().nextInt(greatAnswers.length);
-
-                    botMessage = greatAnswers[rnd];
-                }
-                else if(message.equals("b")){
-                    int rnd = new Random().nextInt(greatAnswers.length);
-
-                    botMessage = badAnswers[rnd] + correctOption;
-                }
-                else if(message.equals("c")){
-                    int rnd = new Random().nextInt(greatAnswers.length);
-
-                    botMessage = badAnswers[rnd] + correctOption;
-                }
+            if(message.equals(correctAnswer)){
+                int randomReaction = new Random().nextInt(greatAnswers.length);
+                botMessage = greatAnswers[randomReaction];
+                this.currentExercise = 0;
             }
-            else if(this.currentExercise == 2){
-                String correctOption = "A";
-
-
-                if(message.equals("a")){
-                    int rnd = new Random().nextInt(greatAnswers.length);
-
-                    botMessage = greatAnswers[rnd];
-                }
-                else if(message.equals("b")){
-                    int rnd = new Random().nextInt(greatAnswers.length);
-
-                    botMessage = badAnswers[rnd] + correctOption;
-                }
-                else if(message.equals("c")){
-                    int rnd = new Random().nextInt(greatAnswers.length);
-
-                    botMessage = badAnswers[rnd] + correctOption;
-                }
+            else{
+                int randomReaction = new Random().nextInt(badAnswers.length);
+                botMessage = badAnswers[randomReaction] + "\"" + exerciseDao.getCorrectAnswer(this.currentExercise) + "\"";
+                this.currentExercise = 0;
             }
-            else if(this.currentExercise == 3){
-                String correctOption = "B";
-
-                if(message.equals("a")){
-                    int rnd = new Random().nextInt(greatAnswers.length);
-
-                    botMessage = badAnswers[rnd] + correctOption;
-                }
-                else if(message.equals("b")){
-                    int rnd = new Random().nextInt(greatAnswers.length);
-
-                    botMessage = greatAnswers[rnd];
-                }
-                else if(message.equals("c")){
-                    int rnd = new Random().nextInt(greatAnswers.length);
-
-                    botMessage = badAnswers[rnd] + correctOption;
-                }
-            }
-            else if(this.currentExercise == 4){
-                String correctOption = "B";
-
-                if(message.equals("a")){
-                    int rnd = new Random().nextInt(badAnswers.length);
-
-                    botMessage = badAnswers[rnd] + correctOption;
-                }
-                else if(message.equals("b")){
-                    int rnd = new Random().nextInt(greatAnswers.length);
-
-                    botMessage = greatAnswers[rnd];
-                }
-
-            }
-
-            this.currentExercise = 0;
         }
+
 
         return botMessage;
 
     }
 
 
-    public static String exercises(String botMessage, int currentExercise){
+    public static String exercises(String botMessage, int currentExercise, Context context){
+        AppDatabase db = AppDatabase.getInstance(context);
+        ExerciseDao exerciseDao = db.getExerciseDao();
 
-        if(currentExercise == 1){
-            botMessage = "What does the following java code returns?\n " +
-                    "'String a = \"java is cool\"" +
-                    "System.out.println(\"hello world\");'\n" +
-                    "(a) \"hello world\" \n" +
-                    "(b) \"java is cool\"\n" +
-                    "(c) \"System.out.println('hello world');\" ";
+        botMessage = exerciseDao.getExerciseQuestion(currentExercise);
 
-        }
-
-        else if(currentExercise == 2){
-            botMessage = "What does the '++' in a for loop do?\n" +
-                    "(a) increments the value of a certain variable\n" +
-                    "(b) does nothing\n" +
-                    "(c) decrements the value of a certain variable";
-        }
-
-        else if(currentExercise == 3){
-            botMessage = "Which option successfully uses a method named \"hello\" from a class called \"myClass\"?\n" +
-                    "(a) hello(myClass)\n" +
-                    "(b) myClass.hello()\n" +
-                    "(c) hello.myClass()";
-        }
-
-        else if(currentExercise == 4){
-            botMessage = "Is String a primitive type in Java?\n" +
-                    "(a) yes\n" +
-                    "(b) no";
-        }
 
         return botMessage;
     }

@@ -6,7 +6,6 @@ import androidx.room.PrimaryKey;
 @Entity(primaryKeys = {"answerId", "exerciseId"})
 public class ExerciseAnswers {
 
-    @PrimaryKey(autoGenerate = true)
     int answerId;
 
     int exerciseId;
