@@ -8,10 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -33,12 +30,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public MessageAdapter.MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == 0) {
             // Criar um objeto do tipo View com base no layout criado (message_item.xml)
-            View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.messagereceived_item, parent, false);
+            View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.messagersent_item, parent, false);
             // criar e devolver um objeto do tipo ContactViewHolder
             return new MessageAdapter.MessageSentViewHolder(rootView, parent.getContext());
         } else {
             // Criar um objeto do tipo View com base no layout criado (message_item.xml)
-            View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.messagesent_item, parent, false);
+            View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.messagereceived_item, parent, false);
             // criar e devolver um objeto do tipo ContactViewHolder
             return new MessageAdapter.MessageReceivedViewHolder(rootView, parent.getContext());
         }
@@ -85,7 +82,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             this.context = context;
             this.rootView = rootView;
             this.authorNameTextView = rootView.findViewById(R.id.authorNameTextView);
-            this.messageTextView = rootView.findViewById(R.id.messageTextView);
+            this.messageTextView = rootView.findViewById(R.id.exerciseQuestionTextView);
             this.dateTextView = rootView.findViewById(R.id.dateTextView);
             this.authorImageView = rootView.findViewById(R.id.authorImageView);
         }

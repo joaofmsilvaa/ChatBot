@@ -30,6 +30,9 @@ public interface ChatDAO {
     @Query("UPDATE chat SET lastMessageDate = :date WHERE chatID = :id ")
     void updateLastMessageDate(String date, int id);
 
+    @Query("UPDATE chat SET lastMessage = :lastMessage WHERE chatID = :id ")
+    void updateLastMessage(String lastMessage, int id);
+
     @Insert
     void insert(Chat chat);
 

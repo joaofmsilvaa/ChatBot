@@ -52,8 +52,6 @@ public class AddChatActivity extends AppCompatActivity {
             }
         });
 
-        // register the UI widgets with their appropriate IDs
-        pickImageButton = findViewById(R.id.pickImageButton);
         previewImageView = findViewById(R.id.previewImageView);
 
         Glide.with(AddChatActivity.this).load(R.drawable.botimage_01).into(previewImageView);
