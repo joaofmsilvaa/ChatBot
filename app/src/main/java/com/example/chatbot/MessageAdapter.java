@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.w3c.dom.Text;
@@ -62,19 +63,44 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     @Override
     public void onBindViewHolder(@NonNull MessageAdapter.MessageViewHolder holder, int position) {
-        AppDatabase db = AppDatabase.getInstance(holder.context);
 
-        final Message messageList = this.messageList.get(position);
+        if(getItemViewType(position) == 1 || getItemViewType(position) == 0){
+            AppDatabase db = AppDatabase.getInstance(holder.context);
 
-        String chatName = db.getChatDao().getNameByID(messageList.getChatId());
+            final Message messageList = this.messageList.get(position);
 
-        if(messageList.senderId == 0){
-            chatName = "You";
+            String chatName = db.getChatDao().getNameByID(messageList.getChatId());
+
+            if(messageList.senderId == 0){
+                chatName = "You";
+            }
+
+            holder.dateTextView.setText(messageList.getDate());
+            holder.authorNameTextView.setText(chatName);
+            holder.messageTextView.setText(messageList.getMessage());
         }
+        else{
+            AppDatabase db = AppDatabase.getInstance(holder.context);
+            ExerciseAnswersDao exerciseAnswersDao = db.getExerciseAnswersDao();
 
-        holder.dateTextView.setText(messageList.getDate());
-        holder.authorNameTextView.setText(chatName);
-        holder.messageTextView.setText(messageList.getMessage());
+            ExerciseAnswersAdapter adapter;
+
+            final Message messageList = this.messageList.get(position);
+
+            String chatName = db.getChatDao().getNameByID(messageList.getChatId());
+            holder.dateTextView.setText(messageList.getDate());
+            holder.authorNameTextView.setText(chatName);
+            holder.questionTextView.setText(messageList.getMessage());
+
+            adapter = new ExerciseAnswersAdapter(exerciseAnswersDao.optionsFromExercise(messageList.getExerciseId()));
+
+            LinearLayoutManager layoutManager = new LinearLayoutManager(holder.context);
+
+            holder.optionsRecyclerView.setAdapter(adapter);
+            holder.optionsRecyclerView.setLayoutManager(layoutManager);
+
+
+        }
     }
 
 

@@ -23,9 +23,8 @@ public interface ChatDAO {
     @Query("SELECT * FROM chat WHERE chatID = :chatId")
     Chat getChatById(int chatId);
 
-    @Query("SELECT chatImage FROM chat WHERE chatID = :id")
-    String getPictureByChatId(int id);
-
+    @Query("DELETE FROM message WHERE chatId = :chatId")
+    void clearChat(int chatId);
 
     @Query("UPDATE chat SET lastMessageDate = :date WHERE chatID = :id ")
     void updateLastMessageDate(String date, int id);

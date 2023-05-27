@@ -20,7 +20,6 @@ import java.util.Random;
 
 public class MessageActivity extends AppCompatActivity {
 
-    private String chatKey = "chatIDkey";
     private MessageAdapter adapter;
     private EditText messageEditText;
     private FloatingActionButton sendMessageFAB;
@@ -95,7 +94,7 @@ public class MessageActivity extends AppCompatActivity {
 
                     currentDate += " " + hour;
 
-                    Message newMessage = new Message(0,chatId, personSenderId , false ,message,currentDate);
+                    Message newMessage = new Message(0,chatId, personSenderId , false , 0 ,message,currentDate);
 
                     messageDAO.insert(newMessage);
 
@@ -132,7 +131,7 @@ public class MessageActivity extends AppCompatActivity {
 
         String botMessage = generateAnswers(message, this.exerciseIndicator);
 
-        Message newMessage = new Message(0, chatId , botSenderId , this.exerciseIndicator ,botMessage , currentDate);
+        Message newMessage = new Message(0, chatId , botSenderId , this.exerciseIndicator , this.currentExercise , botMessage , currentDate);
 
         messageDAO.insert(newMessage);
 
@@ -153,12 +152,35 @@ public class MessageActivity extends AppCompatActivity {
 
     public String generateAnswers(String message, Boolean exerciseIndicator) {
         this.exerciseIndicator = false;
-        String botMessage = message;
 
         AppDatabase db = AppDatabase.getInstance(this);
         ExerciseDao exerciseDao = db.getExerciseDao();
 
         if(!this.exerciseIndicator && this.currentExercise == 0){
+            messageAnalyze(message,message, exerciseDao);
+        }
+        else if(this.currentExercise != 0){
+            exerciseAnalyze(message,message,exerciseDao);
+        }
+
+
+        return message;
+
+    }
+
+
+    public static String exercises(String botMessage, int currentExercise, Context context){
+        AppDatabase db = AppDatabase.getInstance(context);
+        ExerciseDao exerciseDao = db.getExerciseDao();
+
+        botMessage = exerciseDao.getExerciseQuestion(currentExercise);
+
+        return botMessage;
+    }
+
+
+    public String messageAnalyze(String botMessage, String message, ExerciseDao exerciseDao) {
+
             if ("hello".equals(message) || "hi".equals(message) || "it's good to see you".equals(message) || "hi there".equals(message)) {
                 String[] greedings = {"Hello", "Hi", "Hello, how are you?", "It's good to see you too!", "hi there"};
                 int rnd = new Random().nextInt(greedings.length);
@@ -179,8 +201,7 @@ public class MessageActivity extends AppCompatActivity {
                 int rnd = new Random().nextInt(sadStatus.length);
 
                 botMessage = sadStatus[rnd];
-            }
-            else if("ask me a question".equals(message) || "give me a exercise".equals(message) || "ask me something".equals(message)){
+            } else if ("ask me a question".equals(message) || "give me a exercise".equals(message) || "ask me something".equals(message)) {
                 this.currentExercise = new Random().nextInt(exerciseDao.getAmmountOfExercises());
                 this.exerciseIndicator = true;
 
@@ -188,37 +209,26 @@ public class MessageActivity extends AppCompatActivity {
 
                 botMessage = exercises(botMessage, this.currentExercise, this);
             }
-        }
-        else if(this.currentExercise != 0){
-            String[] greatAnswers = {"Great, you're right", "Nice, you got it", "Well done, you did great"};
-            String[] badAnswers = {"Incorrect, the answer was option ", "Nope, it was option ", "Good luck next time, it was option "};
 
-            String correctAnswer = exerciseDao.getCorrectAnswer(this.currentExercise);
-
-            if(message.equals(correctAnswer)){
-                int randomReaction = new Random().nextInt(greatAnswers.length);
-                botMessage = greatAnswers[randomReaction];
-                this.currentExercise = 0;
-            }
-            else{
-                int randomReaction = new Random().nextInt(badAnswers.length);
-                botMessage = badAnswers[randomReaction] + "\"" + exerciseDao.getCorrectAnswer(this.currentExercise) + "\"";
-                this.currentExercise = 0;
-            }
-        }
-
-
-        return botMessage;
-
+            return botMessage;
     }
 
+    public String exerciseAnalyze(String botMessage, String message, ExerciseDao exerciseDao){
+        String[] greatAnswers = {"Great, you're right", "Nice, you got it", "Well done, you did great"};
+        String[] badAnswers = {"Incorrect, the answer was option ", "Nope, it was option ", "Good luck next time, it was option "};
 
-    public static String exercises(String botMessage, int currentExercise, Context context){
-        AppDatabase db = AppDatabase.getInstance(context);
-        ExerciseDao exerciseDao = db.getExerciseDao();
+        String correctAnswer = exerciseDao.getCorrectAnswer(this.currentExercise);
 
-        botMessage = exerciseDao.getExerciseQuestion(currentExercise);
-
+        if(message.equals(correctAnswer)){
+            int randomReaction = new Random().nextInt(greatAnswers.length);
+            botMessage = greatAnswers[randomReaction];
+            this.currentExercise = 0;
+        }
+        else{
+            int randomReaction = new Random().nextInt(badAnswers.length);
+            botMessage = badAnswers[randomReaction] + "\"" + exerciseDao.getCorrectAnswer(this.currentExercise) + "\"";
+            this.currentExercise = 0;
+        }
 
         return botMessage;
     }

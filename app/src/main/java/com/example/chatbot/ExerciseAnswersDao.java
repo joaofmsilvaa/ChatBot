@@ -8,7 +8,6 @@ import java.util.List;
 @Dao
 public interface ExerciseAnswersDao {
 
-    @Query("SELECT * FROM ExerciseAnswers")
-    List<ExerciseAnswers> getAll();
-
+    @Query("SELECT * FROM ExerciseAnswers WHERE exerciseId = :id")
+    List<ExerciseAnswers> optionsFromExercise(int id);
 }

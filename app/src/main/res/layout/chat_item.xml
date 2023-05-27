@@ -5,7 +5,7 @@
     android:id="@+id/chatConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:onClick="showChat">
+    >
 
     <ImageView
         android:id="@+id/chatImageView"
@@ -13,6 +13,7 @@
         android:layout_height="90dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:onClick="chatDetails"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/java_icon" />

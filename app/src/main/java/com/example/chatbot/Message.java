@@ -19,14 +19,17 @@ public class Message {
     // If the value is equal to "true" it is a exercise
     Boolean exerciseMessage;
 
+    int exerciseId;
+
     String message;
     String date;
 
-    public Message(int messageId, int chatId , int senderId , Boolean exerciseMessage ,String message, String date) {
+    public Message(int messageId, int chatId , int senderId , Boolean exerciseMessage , int exerciseId ,String message, String date) {
         this.messageId = messageId;
         this.chatId = chatId;
         this.senderId = senderId;
         this.exerciseMessage = exerciseMessage;
+        this.exerciseId = exerciseId;
         this.message = message;
         this.date = date;
     }
@@ -45,6 +48,10 @@ public class Message {
 
     public Boolean getExerciseMessage(){
         return exerciseMessage;
+    }
+
+    public int getExerciseId() {
+        return exerciseId;
     }
 
     public String getMessage() {

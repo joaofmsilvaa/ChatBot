@@ -1,6 +1,7 @@
 package com.example.chatbot;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
-import org.w3c.dom.Text;
-
-import java.util.EventListener;
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder>{
@@ -54,6 +52,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         } else {
             holder.lastMessageTextView.setText("");
         }
+
+        holder.chatImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(holder.context, ChatDetailsActivity.class);
+                intent.putExtra(ChatDetailsActivity.KEY_CHAT_ID, chat.getChatID());
+                holder.context.startActivity(intent);
+            }
+        });
 
         holder.chatConstraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
