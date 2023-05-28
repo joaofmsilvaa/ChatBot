@@ -16,6 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public class MessageActivity extends AppCompatActivity {
@@ -157,10 +158,10 @@ public class MessageActivity extends AppCompatActivity {
         ExerciseDao exerciseDao = db.getExerciseDao();
 
         if(!this.exerciseIndicator && this.currentExercise == 0){
-            messageAnalyze(message,message, exerciseDao);
+            message = messageAnalyze(message, exerciseDao);
         }
         else if(this.currentExercise != 0){
-            exerciseAnalyze(message,message,exerciseDao);
+            message = exerciseAnalyze(message,exerciseDao);
         }
 
 
@@ -179,57 +180,57 @@ public class MessageActivity extends AppCompatActivity {
     }
 
 
-    public String messageAnalyze(String botMessage, String message, ExerciseDao exerciseDao) {
+    public String messageAnalyze(String message, ExerciseDao exerciseDao) {
 
             if ("hello".equals(message) || "hi".equals(message) || "it's good to see you".equals(message) || "hi there".equals(message)) {
                 String[] greedings = {"Hello", "Hi", "Hello, how are you?", "It's good to see you too!", "hi there"};
                 int rnd = new Random().nextInt(greedings.length);
 
-                botMessage = greedings[rnd];
+                message = greedings[rnd];
             } else if ("how are you?".equals(message) || "what's up?".equals(message) || "how have you been?".equals(message)) {
                 String[] checkingIn = {"Good, and you?", "Better now that we're talking  :)", "Good, thanks for asking", "I'm good, can i help you with something?"};
                 int rnd = new Random().nextInt(checkingIn.length);
 
-                botMessage = checkingIn[rnd];
+                message = checkingIn[rnd];
             } else if ("good".equals(message) || "i am good".equals(message) || "i am great".equals(message)) {
                 String[] status = {"That's great", "Nice, can i help you something?", "Fantastic!"};
                 int rnd = new Random().nextInt(status.length);
 
-                botMessage = status[rnd];
+                message = status[rnd];
             } else if ("i am not feeling good".equals(message) || "i am feeling bad".equals(message) || "i am sad".equals(message) || "bad".equals(message)) {
                 String[] sadStatus = {"Do you want me to tell you a joke?", "I'm sorry to hear that", "I'm sorry, can i help you with something?"};
                 int rnd = new Random().nextInt(sadStatus.length);
 
-                botMessage = sadStatus[rnd];
+                message = sadStatus[rnd];
             } else if ("ask me a question".equals(message) || "give me a exercise".equals(message) || "ask me something".equals(message)) {
                 this.currentExercise = new Random().nextInt(exerciseDao.getAmmountOfExercises());
                 this.exerciseIndicator = true;
 
-                Log.i("test", Integer.toString(this.currentExercise));
-
-                botMessage = exercises(botMessage, this.currentExercise, this);
+                message = exercises(message, this.currentExercise, this);
             }
 
-            return botMessage;
+        return message;
     }
 
-    public String exerciseAnalyze(String botMessage, String message, ExerciseDao exerciseDao){
+    public String exerciseAnalyze(String message, ExerciseDao exerciseDao){
         String[] greatAnswers = {"Great, you're right", "Nice, you got it", "Well done, you did great"};
         String[] badAnswers = {"Incorrect, the answer was option ", "Nope, it was option ", "Good luck next time, it was option "};
 
         String correctAnswer = exerciseDao.getCorrectAnswer(this.currentExercise);
 
-        if(message.equals(correctAnswer)){
+        if(message.equals(correctAnswer) || message.equals(correctAnswer.toLowerCase(Locale.ROOT))){
             int randomReaction = new Random().nextInt(greatAnswers.length);
-            botMessage = greatAnswers[randomReaction];
+            message = greatAnswers[randomReaction];
             this.currentExercise = 0;
+            this.exerciseIndicator = false;
         }
         else{
             int randomReaction = new Random().nextInt(badAnswers.length);
-            botMessage = badAnswers[randomReaction] + "\"" + exerciseDao.getCorrectAnswer(this.currentExercise) + "\"";
+            message = badAnswers[randomReaction] + "\"" + exerciseDao.getCorrectAnswer(this.currentExercise) + "\"";
             this.currentExercise = 0;
+            this.exerciseIndicator = false;
         }
 
-        return botMessage;
+        return message;
     }
 }
