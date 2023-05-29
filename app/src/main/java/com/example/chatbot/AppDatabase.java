@@ -29,15 +29,15 @@ public abstract class AppDatabase extends RoomDatabase {
 
                             // Exercises
 
-                            db.execSQL("INSERT INTO Exercise VALUES (0 , 'What does the following java code returns?\n " +
+                            db.execSQL("INSERT INTO Exercise VALUES (1 , 'What does the following java code returns?\n " +
                                     "String a = \"Java is cool\";" +
                                     "System.out.println(\"hello world\");', 'A')");
 
-                            db.execSQL("INSERT INTO Exercise VALUES (1 ,'What does the \"++\" in a for loop do?\n', 'A')");
+                            db.execSQL("INSERT INTO Exercise VALUES (2 ,'What does the \"++\" in a for loop do?\n', 'A')");
 
-                            db.execSQL("INSERT INTO Exercise VALUES (2 ,'Which option successfully uses a method named \"hello\" from a class called \"myClass\"?\n', 'B')");
+                            db.execSQL("INSERT INTO Exercise VALUES (3 ,'Which option successfully uses a method named \"hello\" from a class called \"myClass\"?\n', 'B')");
 
-                            db.execSQL("INSERT INTO Exercise VALUES (3, 'Is String a primitive type in Java?\n', 'B')");
+                            db.execSQL("INSERT INTO Exercise VALUES (4, 'Is String a primitive type in Java?\n', 'B')");
 
 
                             // Exercise Answers
