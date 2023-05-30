@@ -182,32 +182,27 @@ public class MessageActivity extends AppCompatActivity {
 
     public String messageAnalyze(String message, ExerciseDao exerciseDao) {
 
-            if ("hello".equals(message) || "hi".equals(message) || "it's good to see you".equals(message) || "hi there".equals(message)) {
-                String[] greedings = {"Hello", "Hi", "Hello, how are you?", "It's good to see you too!", "hi there"};
-                int rnd = new Random().nextInt(greedings.length);
+        AppDatabase db = AppDatabase.getInstance(this);
+        KnownInputDao knownInputDao = db.getKnowninputDao();
+        OutputDao outputDao = db.getOutputDao();
 
-                message = greedings[rnd];
-            } else if ("how are you?".equals(message) || "what's up?".equals(message) || "how have you been?".equals(message)) {
-                String[] checkingIn = {"Good, and you?", "Better now that we're talking  :)", "Good, thanks for asking", "I'm good, can i help you with something?"};
-                int rnd = new Random().nextInt(checkingIn.length);
+        int ammountSimilar = knownInputDao.countSimilar(message);
 
-                message = checkingIn[rnd];
-            } else if ("good".equals(message) || "i am good".equals(message) || "i am great".equals(message)) {
-                String[] status = {"That's great", "Nice, can i help you something?", "Fantastic!"};
-                int rnd = new Random().nextInt(status.length);
+        if (ammountSimilar > 0) {
+            int inputId = knownInputDao.getInputId(message);
 
-                message = status[rnd];
-            } else if ("i am not feeling good".equals(message) || "i am feeling bad".equals(message) || "i am sad".equals(message) || "bad".equals(message)) {
-                String[] sadStatus = {"Do you want me to tell you a joke?", "I'm sorry to hear that", "I'm sorry, can i help you with something?"};
-                int rnd = new Random().nextInt(sadStatus.length);
+            List<String> outputList = outputDao.getOutputForId(inputId);
 
-                message = sadStatus[rnd];
-            } else if ("ask me a question".equals(message) || "give me a exercise".equals(message) || "ask me something".equals(message)) {
-                this.currentExercise = new Random().nextInt(exerciseDao.getAmmountOfExercises());
-                this.exerciseIndicator = true;
+            int rnd = new Random().nextInt(outputList.size());
 
-                message = exercises(message, this.currentExercise, this);
-            }
+            message = outputList.get(rnd);
+
+        } else if ("ask me a question".equals(message) || "give me a exercise".equals(message) || "ask me something".equals(message)) {
+            this.currentExercise = new Random().nextInt(exerciseDao.getAmmountOfExercises());
+            this.exerciseIndicator = true;
+
+            message = exercises(message, this.currentExercise, this);
+        }
 
         return message;
     }
