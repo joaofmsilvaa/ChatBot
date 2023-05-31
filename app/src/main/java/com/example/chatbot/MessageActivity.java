@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,8 +19,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class MessageActivity extends AppCompatActivity {
+public class MessageActivity extends AppCompatActivity{
 
     private MessageAdapter adapter;
     private EditText messageEditText;
@@ -28,7 +30,6 @@ public class MessageActivity extends AppCompatActivity {
     private  LinearLayoutManager layoutManager;
     private int currentExercise = 0;
     private Boolean exerciseIndicator = false;
-
     private RecyclerView recyclerView;
 
     @Override
@@ -86,6 +87,7 @@ public class MessageActivity extends AppCompatActivity {
                 // https://stackoverflow.com/questions/3247067/how-do-i-check-that-a-java-string-is-not-all-whitespaces
 
                 if (message.trim().length() > 0){
+
                     // Source: https://stackoverflow.com/questions/27016547/how-to-keep-recyclerview-always-scroll-bottom
                     layoutManager.setStackFromEnd(true);
 
@@ -141,7 +143,7 @@ public class MessageActivity extends AppCompatActivity {
     public void botAnswer(int chatId, String currentDate, String message, MessageDAO messageDAO, AppDatabase db){
         int botSenderId = 1;
 
-        String botMessage = generateAnswers(message, this.exerciseIndicator);
+        String botMessage = generateAnswers(message, this.exerciseIndicator, null);
 
         Message newMessage = new Message(0, chatId , botSenderId , this.exerciseIndicator , this.currentExercise , botMessage , currentDate);
 
@@ -165,7 +167,7 @@ public class MessageActivity extends AppCompatActivity {
 
     }
 
-    public String generateAnswers(String message, Boolean exerciseIndicator) {
+    public String generateAnswers(String message, Boolean exerciseIndicator, String optionClicked) {
         this.exerciseIndicator = false;
 
         AppDatabase db = AppDatabase.getInstance(this);
@@ -176,6 +178,16 @@ public class MessageActivity extends AppCompatActivity {
         }
         else if(this.currentExercise != 0){
             message = exerciseAnalyze(message,exerciseDao);
+        }
+        else if(optionClicked != null){
+            if(optionClicked.equals("true")){
+                String correctAnswer = exerciseDao.getCorrectAnswer(currentExercise);
+                message = exerciseAnalyze(correctAnswer,exerciseDao);
+            }
+            else{
+                String wrongAnswer = "wrong";
+                message = exerciseAnalyze(wrongAnswer,exerciseDao);
+            }
         }
 
 
@@ -211,8 +223,11 @@ public class MessageActivity extends AppCompatActivity {
 
             message = outputList.get(rnd);
 
-        } else if ("ask me a question".equals(message) || "give me a exercise".equals(message) || "ask me something".equals(message)) {
-            this.currentExercise = new Random().nextInt(exerciseDao.getAmmountOfExercises());
+        }
+        else if ("ask me a question".equals(message) || "give me a exercise".equals(message) || "ask me something".equals(message)) {
+            // nextInt is normally exclusive of the top value,
+            // so add 1 to make it inclusive
+            this.currentExercise = ThreadLocalRandom.current().nextInt(1, exerciseDao.getAmmountOfExercises() + 1);
             this.exerciseIndicator = true;
 
             message = exercises(message, this.currentExercise, this);

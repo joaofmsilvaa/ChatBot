@@ -30,27 +30,17 @@ public abstract class AppDatabase extends RoomDatabase {
                             super.onCreate(db);
 
                             // KnownInput
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input') VALUES(0, 'hello')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input') VALUES(1, 'hi')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input') VALUES(2, 'hey')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input') VALUES(3, 'how are you?')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input') VALUES(4, 'how have you been?')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input') VALUES(5, 'good')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input') VALUES(6, 'i am not feeling good')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input') VALUES(7, 'i am feeling bad')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input') VALUES(8, 'i am sad')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input') VALUES(9, 'bad')");
 
-                            db.execSQL("INSERT INTO KnownInput VALUES(0, 'hello')");
-                            db.execSQL("INSERT INTO KnownInput VALUES(1, 'hi')");
-                            db.execSQL("INSERT INTO KnownInput VALUES(2, 'hey')");
-                            db.execSQL("INSERT INTO KnownInput VALUES(3, 'how are you?')");
-                            db.execSQL("INSERT INTO KnownInput VALUES(4, 'how have you been?')");
-                            db.execSQL("INSERT INTO KnownInput VALUES(5, 'good')");
-                            db.execSQL("INSERT INTO KnownInput VALUES(6, 'i am not feeling good')");
-                            db.execSQL("INSERT INTO KnownInput VALUES(7, 'i am feeling bad')");
-                            db.execSQL("INSERT INTO KnownInput VALUES(8, 'i am sad')");
-                            db.execSQL("INSERT INTO KnownInput VALUES(9, 'bad')");
-                            db.execSQL("INSERT INTO KnownInput VALUES(10, 'Good morning')");
-                            db.execSQL("INSERT INTO KnownInput VALUES(11, 'Good evening')");
-                            db.execSQL("INSERT INTO KnownInput VALUES(12, 'Good night')");
-                            db.execSQL("INSERT INTO KnownInput VALUES(13, 'Whats up?')");
-                            db.execSQL("INSERT INTO KnownInput VALUES(14, 'its good to see you')");
-                            db.execSQL("INSERT INTO KnownInput VALUES(15, 'hi there')");
-                            db.execSQL("INSERT INTO KnownInput VALUES(16, 'tell me a joke')");
-                            db.execSQL("INSERT INTO KnownInput VALUES(17, 'make me laugh')");
-                            db.execSQL("INSERT INTO KnownInput VALUES(18, 'whats your favorite movie')");
-                            db.execSQL("INSERT INTO KnownInput VALUES(19, 'bad')");
 
                             // Output
 
@@ -70,20 +60,20 @@ public abstract class AppDatabase extends RoomDatabase {
                             db.execSQL("INSERT INTO Output VALUES(13, 4 ,'Good and you?')");
                             db.execSQL("INSERT INTO Output VALUES(14, 4 ,'Great, can i help you?')");
                             db.execSQL("INSERT INTO Output VALUES(15, 5 ,'Great')");
-                            db.execSQL("INSERT INTO Output VALUES(15, 5 ,'Nice')");
-                            db.execSQL("INSERT INTO Output VALUES(15, 5 ,'Good, can i help you with something?')");
-                            db.execSQL("INSERT INTO Output VALUES(15, 6 ,'Im sorry to hear that')");
-                            db.execSQL("INSERT INTO Output VALUES(15, 6 ,'Thats sad, can i help you with something?')");
-                            db.execSQL("INSERT INTO Output VALUES(15, 6 ,'Im really sorry')");
-                            db.execSQL("INSERT INTO Output VALUES(15, 7 ,'Im sorry to hear that')");
-                            db.execSQL("INSERT INTO Output VALUES(15, 7 ,'Thats sad, can i help you with something?')");
-                            db.execSQL("INSERT INTO Output VALUES(15, 7 ,'Im really sorry')");
-                            db.execSQL("INSERT INTO Output VALUES(15, 8 ,'Im sorry to hear that')");
-                            db.execSQL("INSERT INTO Output VALUES(15, 8 ,'Thats sad, can i help you with something?')");
-                            db.execSQL("INSERT INTO Output VALUES(15, 8 ,'Im really sorry')");
-                            db.execSQL("INSERT INTO Output VALUES(15, 9 ,'Im sorry to hear that')");
-                            db.execSQL("INSERT INTO Output VALUES(15, 9 ,'Thats sad, can i help you with something?')");
-                            db.execSQL("INSERT INTO Output VALUES(15, 9 ,'Im really sorry')");
+                            db.execSQL("INSERT INTO Output VALUES(16, 5 ,'Nice')");
+                            db.execSQL("INSERT INTO Output VALUES(17, 5 ,'Good, can i help you with something?')");
+                            db.execSQL("INSERT INTO Output VALUES(18, 6 ,'Im sorry to hear that')");
+                            db.execSQL("INSERT INTO Output VALUES(19, 6 ,'Thats sad, can i help you with something?')");
+                            db.execSQL("INSERT INTO Output VALUES(20, 6 ,'Im really sorry')");
+                            db.execSQL("INSERT INTO Output VALUES(21, 7 ,'Im sorry to hear that')");
+                            db.execSQL("INSERT INTO Output VALUES(22, 7 ,'Thats sad, can i help you with something?')");
+                            db.execSQL("INSERT INTO Output VALUES(23, 7 ,'Im really sorry')");
+                            db.execSQL("INSERT INTO Output VALUES(24, 8 ,'Im sorry to hear that')");
+                            db.execSQL("INSERT INTO Output VALUES(25, 8 ,'Thats sad, can i help you with something?')");
+                            db.execSQL("INSERT INTO Output VALUES(26, 8 ,'Im really sorry')");
+                            db.execSQL("INSERT INTO Output VALUES(27, 9 ,'Im sorry to hear that')");
+                            db.execSQL("INSERT INTO Output VALUES(28, 9 ,'Thats sad, can i help you with something?')");
+                            db.execSQL("INSERT INTO Output VALUES(29, 9 ,'Im really sorry')");
 
                             // Exercises
 

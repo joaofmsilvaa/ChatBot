@@ -7,4 +7,6 @@
     <color name="teal_700">#2a6384</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="correctAnswer">#4CAF50</color>
+    <color name="wrongAnswer">#BA0C0C</color>
 </resources>

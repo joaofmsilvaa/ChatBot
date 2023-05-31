@@ -25,14 +25,6 @@ public class MainActivity extends AppCompatActivity implements ChatAdapter.ChatA
 
         FloatingActionButton addChatButton = findViewById(R.id.addNewChatButton);
 
-        addChatButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AddChatActivity.class);
-                MainActivity.this.startActivity(intent);
-            }
-        });
-
         // obter uma referência para a RecyclerView que existe no layout da MainActivity
         RecyclerView recyclerView = findViewById(R.id.chatsRecyclerView);
 

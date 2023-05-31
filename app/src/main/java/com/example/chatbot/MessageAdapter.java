@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,7 +16,7 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
-public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
+public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder>{
     List<Message> messageList;
 
     public MessageAdapter(List<Message> messageList) {
@@ -93,7 +94,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             holder.authorNameTextView.setText(chatName);
             holder.questionTextView.setText(messageList.getMessage());
 
-            adapter = new ExerciseAnswersAdapter(exerciseAnswersDao.optionsFromExercise(messageList.getExerciseId()));
+            adapter = new ExerciseAnswersAdapter(exerciseAnswersDao.optionsFromExercise(messageList.getExerciseId()), messageList.exerciseId);
 
             LinearLayoutManager layoutManager = new LinearLayoutManager(holder.context);
 
@@ -157,7 +158,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         this.messageList = newMessageList;
         notifyDataSetChanged();
     }
-
 
 
 }

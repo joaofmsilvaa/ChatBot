@@ -53,15 +53,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             holder.lastMessageTextView.setText("");
         }
 
-        holder.chatImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(holder.context, ChatDetailsActivity.class);
-                intent.putExtra(ChatDetailsActivity.KEY_CHAT_ID, chat.getChatID());
-                holder.context.startActivity(intent);
-            }
-        });
-
         holder.chatConstraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
