@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements ChatAdapter.ChatA
         // o LinearLayoutManager tem como orientação default a orientação Vertical
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
+
         // Definir que a RecyclerView utiliza como Adapter o objeto que criámos anteriormente
         recyclerView.setAdapter(this.adapter);
         // Definir que a RecyclerView utiliza como LayoutManager o objeto que criámos anteriormente
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements ChatAdapter.ChatA
         super.onStart();
         List<Chat> newChatList = AppDatabase.getInstance(this).getChatDao().getAll();
         this.adapter.refreshList(newChatList);
+
     }
 
     @Override

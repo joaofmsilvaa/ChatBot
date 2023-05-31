@@ -78,6 +78,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             holder.dateTextView.setText(messageList.getDate());
             holder.authorNameTextView.setText(chatName);
             holder.messageTextView.setText(messageList.getMessage());
+
         }
         else{
             AppDatabase db = AppDatabase.getInstance(holder.context);
@@ -98,7 +99,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
             holder.optionsRecyclerView.setAdapter(adapter);
             holder.optionsRecyclerView.setLayoutManager(layoutManager);
-
 
         }
     }

@@ -29,6 +29,8 @@ public class MessageActivity extends AppCompatActivity {
     private int currentExercise = 0;
     private Boolean exerciseIndicator = false;
 
+    private RecyclerView recyclerView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +53,7 @@ public class MessageActivity extends AppCompatActivity {
         int chatId = bundle.getInt("chatIDKey");
 
         // obter uma referência para a RecyclerView que existe no layout da chatActivity
-        RecyclerView recyclerView = findViewById(R.id.messagesRecyclerView);
+        recyclerView = findViewById(R.id.messagesRecyclerView);
 
         // obter uma instância do messageDAO
         AppDatabase db = AppDatabase.getInstance(this);
@@ -84,6 +86,9 @@ public class MessageActivity extends AppCompatActivity {
                 // https://stackoverflow.com/questions/3247067/how-do-i-check-that-a-java-string-is-not-all-whitespaces
 
                 if (message.trim().length() > 0){
+                    // Source: https://stackoverflow.com/questions/27016547/how-to-keep-recyclerview-always-scroll-bottom
+                    layoutManager.setStackFromEnd(true);
+
                     messageEditText.setText("");
 
                     Calendar calendar = Calendar.getInstance();
@@ -105,14 +110,20 @@ public class MessageActivity extends AppCompatActivity {
                     List<Message> newMessageList = db.getMessageDao().getAll(chatId);
                     MessageActivity.this.adapter.refreshList(newMessageList, MessageActivity.this);
 
+                    recyclerView.scrollToPosition(adapter.getItemCount()-1);
+
                     botAnswer(chatId, currentDate, message, messageDAO, db);
 
-                    // Source: https://stackoverflow.com/questions/27016547/how-to-keep-recyclerview-always-scroll-bottom
-                    layoutManager.setStackFromEnd(true);
 
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        layoutManager.setStackFromEnd(true);
     }
 
     public static String minuteFormater(Calendar calendar){
@@ -141,6 +152,9 @@ public class MessageActivity extends AppCompatActivity {
 
         List<Message> newMessageList = db.getMessageDao().getAll(chatId);
         MessageActivity.this.adapter.refreshList(newMessageList, MessageActivity.this);
+
+        recyclerView.scrollToPosition(adapter.getItemCount()-1);
+
     }
 
 
