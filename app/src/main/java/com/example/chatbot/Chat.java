@@ -20,6 +20,7 @@ public class Chat {
         this.chatImage = chatImage;
     }
 
+
     public int getChatID(){
         return chatID;
     }

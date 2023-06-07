@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements ChatAdapter.ChatAdapterEventListener{
 
     private ChatAdapter adapter;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,15 @@ public class MainActivity extends AppCompatActivity implements ChatAdapter.ChatA
         setContentView(R.layout.activity_main);
 
         FloatingActionButton addChatButton = findViewById(R.id.addNewChatButton);
+
+        addChatButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddChatActivity.class);
+                MainActivity.this.startActivity(intent);
+            }
+        });
+
 
         // obter uma referência para a RecyclerView que existe no layout da MainActivity
         RecyclerView recyclerView = findViewById(R.id.chatsRecyclerView);
@@ -68,10 +79,8 @@ public class MainActivity extends AppCompatActivity implements ChatAdapter.ChatA
         ChatDAO chatDao = AppDatabase.getInstance(MainActivity.this).getChatDao();
         Chat chat = chatDao.getChatById(chatId);
 
-        // 1. Instantiate an <code><a href="/reference/android/app/AlertDialog.Builder.html">AlertDialog.Builder</a></code> with its constructor
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        // 2. Chain together various setter methods to set the dialog characteristics
         builder.setTitle("Delete chat");
         builder.setMessage("Do you really want to delete \"" + chat.getChatName() + "\" ?");
 
@@ -92,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements ChatAdapter.ChatA
             }
         });
 
-        // 3. Get the <code><a href="/reference/android/app/AlertDialog.html">AlertDialog</a></code> from <code><a href="/reference/android/app/AlertDialog.Builder.html#create()">create()</a></code>
+
         AlertDialog dialog = builder.create();
         dialog.show();
     }
