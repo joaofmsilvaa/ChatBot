@@ -212,9 +212,17 @@ public class MessageActivity extends AppCompatActivity{
         KnownInputDao knownInputDao = db.getKnowninputDao();
         OutputDao outputDao = db.getOutputDao();
 
-        int ammountSimilar = knownInputDao.countSimilar(message);
+        int amountSimilar = knownInputDao.countSimilar(message);
+        int amountSimilarExercise = knownInputDao.countSimilarExercise(message);
 
-        if (ammountSimilar > 0) {
+        if(amountSimilarExercise > 0){
+            this.currentExercise = ThreadLocalRandom.current().nextInt(1, exerciseDao.getAmmountOfExercises() + 1);
+            this.exerciseIndicator = true;
+
+            message = exercises(message, this.currentExercise, this);
+        }
+
+        else if (amountSimilarExercise == 0 && amountSimilar > 0) {
             int inputId = knownInputDao.getInputId(message);
 
             List<String> outputList = outputDao.getOutputForId(inputId);
@@ -223,14 +231,6 @@ public class MessageActivity extends AppCompatActivity{
 
             message = outputList.get(rnd);
 
-        }
-        else if ("ask me a question".equals(message) || "give me a exercise".equals(message) || "ask me something".equals(message)) {
-            // nextInt is normally exclusive of the top value,
-            // so add 1 to make it inclusive
-            this.currentExercise = ThreadLocalRandom.current().nextInt(1, exerciseDao.getAmmountOfExercises() + 1);
-            this.exerciseIndicator = true;
-
-            message = exercises(message, this.currentExercise, this);
         }
 
         return message;

@@ -30,16 +30,19 @@ public abstract class AppDatabase extends RoomDatabase {
                             super.onCreate(db);
 
                             // KnownInput
-                            db.execSQL("INSERT INTO KnownInput('inputId', 'input') VALUES(0, 'hello')");
-                            db.execSQL("INSERT INTO KnownInput('inputId', 'input') VALUES(1, 'hi')");
-                            db.execSQL("INSERT INTO KnownInput('inputId', 'input') VALUES(2, 'hey')");
-                            db.execSQL("INSERT INTO KnownInput('inputId', 'input') VALUES(3, 'how are you?')");
-                            db.execSQL("INSERT INTO KnownInput('inputId', 'input') VALUES(4, 'how have you been?')");
-                            db.execSQL("INSERT INTO KnownInput('inputId', 'input') VALUES(5, 'good')");
-                            db.execSQL("INSERT INTO KnownInput('inputId', 'input') VALUES(6, 'i am not feeling good')");
-                            db.execSQL("INSERT INTO KnownInput('inputId', 'input') VALUES(7, 'i am feeling bad')");
-                            db.execSQL("INSERT INTO KnownInput('inputId', 'input') VALUES(8, 'i am sad')");
-                            db.execSQL("INSERT INTO KnownInput('inputId', 'input') VALUES(9, 'bad')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input', 'returnExercise') VALUES(0, 'hello', 'false')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input', 'returnExercise') VALUES(1, 'hi', 'false')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input', 'returnExercise') VALUES(2, 'hey', 'false')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input', 'returnExercise') VALUES(3, 'how are you?', 'false')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input', 'returnExercise') VALUES(4, 'how have you been?', 'false')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input', 'returnExercise') VALUES(5, 'good', 'false')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input', 'returnExercise') VALUES(6, 'i am not feeling good', 'false')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input', 'returnExercise') VALUES(7, 'i am feeling bad', 'false')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input', 'returnExercise') VALUES(8, 'i am sad', 'false')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input', 'returnExercise') VALUES(9, 'bad', 'false')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input', 'returnExercise') VALUES(10, 'give me a exercise', 'true')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input', 'returnExercise') VALUES(11, 'ask me something', 'true')");
+                            db.execSQL("INSERT INTO KnownInput('inputId', 'input', 'returnExercise') VALUES(12, 'ask me about java', 'true')");
 
 
                             // Output

@@ -11,9 +11,12 @@ public class KnownInput {
 
     String input;
 
-    public KnownInput(int inputId, String input) {
+    boolean returnExercise;
+
+    public KnownInput(int inputId, String input, Boolean returnExercise) {
         this.inputId = inputId;
         this.input = input;
+        this.returnExercise = returnExercise;
     }
 
     public int getInputId() {
